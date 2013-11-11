@@ -1,0 +1,14 @@
+-main ApplicationMain 
+-lib openfl
+-cp source
+-D tools=1.1.6
+-D openfl=1.1
+-D fdb
+-D web
+-swf-version 11.2
+-swf export/flash/bin/Bit-Thrash.swf
+-swf-header 600:600:30:000000
+-cp export/flash/haxe
+#--remap nme:flash
+--no-inline
+-debug
