@@ -21,7 +21,7 @@ class ThrBitmap extends Bitmap {
 		var temp:BitmapData;
 		
 		if ( w != null ) {
-			temp = new BitmapData( Std.int( w / _pixelSize ), Std.int( h / _pixelSize ), false, 0xff000000 );
+			temp = new BitmapData( Math.round( w / _pixelSize ), Math.round( h / _pixelSize ), false, 0xff000000 );
 		} else {
 			temp = new BitmapData( getWidth(), getHeight(), false, 0xff000000 );
 		}
@@ -34,7 +34,7 @@ class ThrBitmap extends Bitmap {
 		
 		if ( _pixelSize > 1 ) {
 			var bacon:BitmapData = new BitmapData( Std.int( temp.width * _pixelSize ), Std.int( temp.height * _pixelSize ), false, 0xff000000 );
-			bacon.draw( temp, new Matrix( 2, 0, 0, 2 ) );
+			bacon.draw( temp, new Matrix( _pixelSize, 0, 0, _pixelSize ) );
 			temp = bacon;
 		}
 		

@@ -8,7 +8,7 @@ class ThrBitmapText extends Bitmap {
 	private static inline var TILE_SIZE:Int = 4;
 	private static inline var STD_WIDTH:Int = 3;
 	private static inline var STD_HEIGHT:Int = 5;
-	private static inline var N_WIDTH:Int = 5;
+	private static inline var N_WIDTH:Int = 4;
 	private static inline var M_WIDTH:Int = 5;
 	private static inline var Q_WIDTH:Int = 4;
 	private static inline var W_WIDTH:Int = 5;
@@ -20,29 +20,36 @@ class ThrBitmapText extends Bitmap {
 	private inline function generateBitmapData( t:String, s:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1 ) {
 		t = t.toUpperCase();
 		var w:Int = 0;
+		var h:Int = STD_HEIGHT;
 		var ts:Int = TILE_SIZE;
 		
 		if ( s != 0 ) {
 			ts = s;
 		}
 		
-		for ( i in 0...t.length ) {
-			if ( t.charAt(i) == "M" ) {
-				w += M_WIDTH;
-			} else if ( t.charAt(i) == "N" ) {
-				w += N_WIDTH;
-			} else {
-				w += STD_WIDTH;
+		if ( charsPerLine == 0 ) {
+			w = lineWidth(t);
+		} else {
+			var numLines:Int = Math.ceil( t.length / charsPerLine );
+			h =  numLines * STD_HEIGHT;
+			var longest:Int = 0;
+			var i:Int = 0;
+			
+			while ( i < t.length ) {
+				var thisLine:String = t.substr( i, charsPerLine );
+				var length:Int = lineWidth( thisLine );
+				
+				if ( length > longest ) {
+					longest = length;
+				}
+				
+				i += charsPerLine;
 			}
+			
+			w = longest;
 		}
 		
-		var h:Int = STD_HEIGHT;
-		
-		if ( charsPerLine != 0 ) {
-			h = Math.ceil( t.length / charsPerLine ) * STD_HEIGHT;
-		}
-		
-		var bd:BitmapData = new BitmapData( w * ts + ( t.length - 1 ) * ts, h * ts + ( h - 1 ) * Std.int( ts / 2 ), true, 0 );
+		var bd:BitmapData = new BitmapData( w * ts + ts, h * ts + ( h - 1 ) * Std.int( ts / 2 ), true, 0 );
 		var posX:Int = 0;
 		var posY:Int = 0;
 		var charcount:Int = 0;
@@ -96,12 +103,16 @@ class ThrBitmapText extends Bitmap {
 			case "K":
 				arr = getArray( [ 5, 5, 6, 5, 5 ] );
 			case "L":
-				arr = getArray( [ 5, 5, 5, 5, 7 ] );
+				arr = getArray( [ 4, 4, 4, 4, 7 ] );
 			case "M":
 				arr = [ 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1 ];
 				w = M_WIDTH;
 			case "N":
-				arr = [ 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1 ];
+				arr = [ 1, 0, 0, 1, 
+						1, 1, 0, 1, 
+						1, 0, 1, 1, 
+						1, 0, 0, 1, 
+						1, 0, 0, 1 ];
 				w = N_WIDTH;
 			case "O":
 				arr = getArray( [ 7, 5, 5, 5, 7 ] );
@@ -148,7 +159,6 @@ class ThrBitmapText extends Bitmap {
 		
 		for ( i in arr ) {
 			if ( i == 1 ) {
-				haxe.Log.trace( "TS: " + ts + ", P: " + p );
 				bd.draw( new ThrBitmap( ts, ts, p ), new Matrix( 1, 0, 0, 1, posX, posY ) );
 			}
 			
@@ -179,5 +189,21 @@ class ThrBitmapText extends Bitmap {
 		}
 		
 		return a;
+	}
+	
+	private inline function lineWidth( s:String ):Int {
+		var w:Int = 0;
+		
+		for ( i in 0...s.length ) {
+			if ( s.charAt(i) == "M" ) {
+				w += M_WIDTH;
+			} else if ( s.charAt(i) == "N" ) {
+				w += N_WIDTH;
+			} else {
+				w += STD_WIDTH;
+			}
+		}
+		
+		return w;
 	}
 }

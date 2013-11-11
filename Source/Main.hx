@@ -35,8 +35,6 @@ class Main extends Sprite
 		initialize();
 		
 		var game:Sprite = new BitThrash();
-		//game.width = Lib.current.stage.stageWidth;
-		//game.height = Lib.current.stage.stageHeight;
 		game.scaleX = 2.0;
 		game.scaleY = 2.0;
 		addChild( game );
@@ -48,7 +46,7 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
 		
 		#if flash
-		Lib.current.stage.fullScreenSourceRect = new Rectangle( 0, 0, 640, 480 );
+		Lib.current.stage.fullScreenSourceRect = new Rectangle( 0, 0, 800, 400 );
 		#end
 	}
 }

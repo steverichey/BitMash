@@ -26,8 +26,6 @@ class ThrGame extends ThrSprite {
 		add( _goal );
 		add( _player );
 		
-		addEventListener( KeyboardEvent.KEY_DOWN, onKeyDown );
-		
 		ready = true;
 	}
 	
@@ -35,24 +33,6 @@ class ThrGame extends ThrSprite {
 		if ( ready ) {
 			super.update( e );
 			_level.regenerate();
-		}
-	}
-	
-	private function onKeyDown( k:KeyboardEvent ):Void {
-		if ( k.keyCode == 37 ) {
-			_player.x --;
-		}
-		
-		if ( k.keyCode == 39 ) {
-			_player.x ++;
-		}
-		
-		if ( k.keyCode == 38 ) {
-			_player.y --;
-		}
-		
-		if ( k.keyCode == 40 ) {
-			_player.y ++;
 		}
 	}
 	

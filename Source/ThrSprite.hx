@@ -39,8 +39,14 @@ class ThrSprite extends Sprite {
 		addChild( d );
 	}
 	
+	private function remove( d:DisplayObject ):Void {
+		removeChild( d );
+		members.remove( d );
+		d = null;
+	}
+	
 	private function destroy():Void {
-		addEventListener( Event.COMPLETE, update );
+		removeEventListener( Event.COMPLETE, update );
 		
 		var i:Int = members.length;
 		
