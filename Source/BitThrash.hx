@@ -28,10 +28,8 @@ class BitThrash extends ThrSprite {
 	private function onEndMenu( ?e:Event ):Void {
 		_menu.removeEventListener( Event.COMPLETE, onEndMenu );
 		remove( _menu );
-		_menu.destroy();
-		_menu = null;
 		
-		_game = new ThrGame();
+		//_game = new ThrGame();
 		//add( ThrGame );
 	}
 }

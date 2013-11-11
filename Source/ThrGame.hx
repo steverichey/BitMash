@@ -35,8 +35,4 @@ class ThrGame extends ThrSprite {
 			_level.regenerate();
 		}
 	}
-	
-	private function randomize( lo:Int, hi:Int ):Int {
-		return Std.int( Math.random() * ( hi - lo ) + lo );
-	}
 }

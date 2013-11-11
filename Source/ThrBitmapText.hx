@@ -4,7 +4,13 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 
-class ThrBitmapText extends Bitmap {
+class ThrBitmapText extends ThrBitmap {
+	private var _w:Int;
+	private var _h:Int;
+	private var _text:String;
+	private var _cpl:Int;
+	private var _size:Int;
+	
 	private static inline var TILE_SIZE:Int = 4;
 	private static inline var STD_WIDTH:Int = 3;
 	private static inline var STD_HEIGHT:Int = 5;
@@ -14,59 +20,86 @@ class ThrBitmapText extends Bitmap {
 	private static inline var W_WIDTH:Int = 5;
 	
 	public function new( text:String, size:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1 ) {
-		super( generateBitmapData( text, size, charsPerLine, pixelSize ) );
-	}
-	
-	private inline function generateBitmapData( t:String, s:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1 ) {
-		t = t.toUpperCase();
-		var w:Int = 0;
-		var h:Int = STD_HEIGHT;
-		var ts:Int = TILE_SIZE;
+		_text = text.toUpperCase();
 		
-		if ( s != 0 ) {
-			ts = s;
+		if ( size > 0 ) {
+			_size = size;
+		} else {
+			_size = TILE_SIZE;
 		}
 		
-		if ( charsPerLine == 0 ) {
-			w = lineWidth(t);
+		if ( charsPerLine > 0 ) {
+			_cpl = charsPerLine;
+		}
+		
+		if ( pixelSize > 1 ) {
+			_pixelSize = pixelSize;
 		} else {
-			var numLines:Int = Math.ceil( t.length / charsPerLine );
-			h =  numLines * STD_HEIGHT;
+			_pixelSize = 1;
+		}
+		
+		_w = predictWidth();
+		_h = predictHeight();
+		
+		super( _w, _h, _pixelSize );
+	}
+	
+	private inline function predictWidth():Int {
+		var w:Int = 0;
+		
+		if ( _cpl > 0 ) {
 			var longest:Int = 0;
 			var i:Int = 0;
 			
-			while ( i < t.length ) {
-				var thisLine:String = t.substr( i, charsPerLine );
+			while ( i < _text.length ) {
+				var thisLine:String = _text.substr( i, _cpl );
 				var length:Int = lineWidth( thisLine );
 				
 				if ( length > longest ) {
 					longest = length;
 				}
 				
-				i += charsPerLine;
+				i += _cpl;
 			}
 			
 			w = longest;
+		} else {
+			w = lineWidth( _text );
 		}
 		
-		var bd:BitmapData = new BitmapData( w * ts + ts, h * ts + ( h - 1 ) * Std.int( ts / 2 ), true, 0 );
+		return w;
+	}
+	
+	private inline function predictHeight():Int {
+		var h:Int = STD_HEIGHT;
+		
+		if ( _cpl > 0 ) {
+			var numLines:Int = Math.ceil( _text.length / _cpl );
+			h =  numLines * STD_HEIGHT;
+		}
+		
+		return h * _size + ( h - 1 ) * Std.int( _size / 2 );
+	}
+	
+	override private inline function generate( ?w:Int, ?h:Int ):BitmapData {
+		var bd:BitmapData = new BitmapData( _w, _h, true, 0 );
 		var posX:Int = 0;
 		var posY:Int = 0;
 		var charcount:Int = 0;
 		
-		for ( i in 0...t.length ) {
-			var c:String = t.charAt(i);
-			var b:BitmapData = createChar(c,s,pixelSize);
+		for ( i in 0..._text.length ) {
+			var c:String = _text.charAt(i);
+			var b:BitmapData = createChar(c);
 			bd.draw( b, new Matrix( 1, 0, 0, 1, posX, posY ) );
-			posX += Std.int( b.width + Std.int( ts / 2 ) );
+			posX += Std.int( b.width + Std.int( _size / 2 ) );
 			
-			if ( charsPerLine != 0 ) {
+			if ( _cpl > 0 ) {
 				charcount++;
 				
-				if ( charcount >= charsPerLine ) {
+				if ( charcount >= _cpl ) {
 					charcount = 0;
 					posX = 0;
-					posY += Std.int( b.height + Std.int( ts / 2 ) );
+					posY += Std.int( b.height + Std.int( _size / 2 ) );
 				}
 			}
 			
@@ -75,7 +108,7 @@ class ThrBitmapText extends Bitmap {
 		return bd;
 	}
 	
-	private inline function createChar( c:String, s:Int = 0, p:Int = 1 ):BitmapData {
+	private inline function createChar( c:String ):BitmapData {
 		var arr:Array<Int> = [];
 		var w:Int = STD_WIDTH;
 		
@@ -108,11 +141,7 @@ class ThrBitmapText extends Bitmap {
 				arr = [ 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1 ];
 				w = M_WIDTH;
 			case "N":
-				arr = [ 1, 0, 0, 1, 
-						1, 1, 0, 1, 
-						1, 0, 1, 1, 
-						1, 0, 0, 1, 
-						1, 0, 0, 1 ];
+				arr = [ 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1 ];
 				w = N_WIDTH;
 			case "O":
 				arr = getArray( [ 7, 5, 5, 5, 7 ] );
@@ -144,48 +173,40 @@ class ThrBitmapText extends Bitmap {
 				arr = getArray( [ 0, 0, 0, 0, 0 ] );
 			case "-":
 				arr = getArray( [ 0, 0, 7, 0, 0 ] );
+			case ":":
+				arr = getArray( [ 0, 2, 0, 2, 0 ] );
 		}
 		
-		var ts:Int = TILE_SIZE;
-		
-		if ( s != 0 ) {
-			ts = s;
-		}
-		
-		var bd:BitmapData = new BitmapData( w * ts, STD_HEIGHT * ts, true, 0 );
+		var bd:BitmapData = new BitmapData( w * _size, STD_HEIGHT * _size, true, 0 );
 		
 		var posX:Int = 0;
 		var posY:Int = 0;
 		
 		for ( i in arr ) {
 			if ( i == 1 ) {
-				bd.draw( new ThrBitmap( ts, ts, p ), new Matrix( 1, 0, 0, 1, posX, posY ) );
+				bd.draw( new ThrBitmap( _size, _size, _pixelSize ), new Matrix( 1, 0, 0, 1, posX, posY ) );
 			}
 			
-			posX += ts;
+			posX += _size;
 			
-			if ( posX >= ( ts * w ) ) {
+			if ( posX >= ( _size * w ) ) {
 				posX = 0;
-				posY += ts;
+				posY += _size;
 			}
 		}
 		
 		return bd;
 	}
 	
+	private inline static function BINARY_ARRAY():Array<Array<Int>> {
+		return [ [0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1] ];
+	}
+	
 	private inline function getArray( types:Array<Int> ):Array<Int> {
 		var a:Array<Int> = [];
-		var b:Array<Array<Int>> = [	[0, 0, 0],
-									[0, 0, 1],
-									[0, 1, 0],
-									[0, 1, 1],
-									[1, 0, 0],
-									[1, 0, 1],
-									[1, 1, 0],
-									[1, 1, 1] ];
 		
 		for ( i in types ) {
-			a = a.concat( b[i] );
+			a = a.concat( BINARY_ARRAY()[i] );
 		}
 		
 		return a;
@@ -199,11 +220,15 @@ class ThrBitmapText extends Bitmap {
 				w += M_WIDTH;
 			} else if ( s.charAt(i) == "N" ) {
 				w += N_WIDTH;
+			} else if ( s.charAt(i) == "Q" ) {
+				w += Q_WIDTH;
+			} else if ( s.charAt(i) == "W" ) {
+				w += W_WIDTH;
 			} else {
 				w += STD_WIDTH;
 			}
 		}
 		
-		return w;
+		return w * _size + Std.int( s.length * _size / 2 );
 	}
 }

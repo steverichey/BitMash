@@ -65,4 +65,8 @@ class ThrSprite extends Sprite {
 	private inline function getHeight():Int {
 		return Std.int( this.height );
 	}
+	
+	private function randomize( lo:Int, hi:Int, step:Int = 1 ):Int {
+		return step * Std.int( Math.random() * ( ( hi / step ) - ( lo / step ) ) + ( lo / step ) );
+	}
 }

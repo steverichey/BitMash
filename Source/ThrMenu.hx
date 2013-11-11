@@ -10,7 +10,6 @@ class ThrMenu extends ThrSprite {
 	private var _instructions:ThrBitmapText;
 	private var _player:ThrBitmap;
 	private var _goal:ThrBitmap;
-	private var _input:ThrInput;
 	
 	private static inline var MOVE_DIST:Int = 4;
 	
@@ -21,28 +20,28 @@ class ThrMenu extends ThrSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_text = new ThrBitmapText( "bit-thrash", 8, 3, 4 );
+		_text = new ThrBitmapText( "bit-mash", 8, 3, 4 );
 		_text.x = 4;
 		_text.y = 4;
 		add( _text );
 		
 		_bg = new ThrBitmap( 200, 200, 4 );
-		_bg.x = Std.int( _text.x + _text.width + 4 );
+		_bg.x = _text.gx + _text.gw + 4;
 		add( _bg );
 		
-		_instructions = new ThrBitmapText( "input-up    left  down  right space", 4, 6, 2 );
-		_instructions.x = Std.int( _bg.x + _bg.width + 4 );
-		_instructions.y = Std.int( _bg.y + 4 );
+		_instructions = new ThrBitmapText( "input:up    left  down  right space", 4, 6, 2 );
+		_instructions.x = _bg.gx + _bg.gw + 4;
+		_instructions.y = _bg.gy + 4;
 		add( _instructions );
 		
-		_goal = new ThrBitmap( 8, 8, 8 );
-		_goal.x = Std.int( _bg.x + _bg.width - _goal.width );
-		_goal.y = Std.int( _bg.y + _bg.height - _goal.height );
+		_goal = new ThrBitmap( 4, 4, 4 );
+		_goal.x = randomize( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
+		_goal.y = randomize( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
 		add( _goal );
 		
-		_player = new ThrBitmap( 8, 8, 8 );
-		_player.x = _bg.x;
-		_player.y = _bg.y;
+		_player = new ThrBitmap( 4, 4, 4 );
+		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
+		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
 		add( _player );
 		
 		ready = true;
@@ -83,13 +82,8 @@ class ThrMenu extends ThrSprite {
 			
 			if ( _player.x == _goal.x && _player.y == _goal.y ) {
 				ready = false;
+				dispatchEvent( new Event( Event.COMPLETE ) );
 			}
 		}
-	}
-	
-	override private function destroy():Void {
-		_input.destroy();
-		
-		super.destroy();
 	}
 }
