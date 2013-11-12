@@ -4,6 +4,11 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 
+/**
+ * Converts text to a MashBitmap object composed of smaller MashBitmaps as blocks of each letter.
+ * 
+ * @author Steve Richey
+ */
 class MashBitmapText extends MashBitmap {
 	private var _w:Int;
 	private var _h:Int;

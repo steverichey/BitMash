@@ -4,9 +4,15 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.geom.Point;
 
-class MashMenu extends MashSprite {
+/**
+ * A playable MashSprite class that will eventually be fully customizable via XML or some junk.
+ * 
+ * @author Steve Richey
+ */
+class MashGame extends MashSprite {
 	private var _text:MashBitmapText;
 	private var _bg:MashBitmap;
+	private var _level:MashTiles;
 	private var _instructions:MashBitmapText;
 	private var _player:MashBitmap;
 	private var _goal:MashBitmap;
@@ -25,13 +31,18 @@ class MashMenu extends MashSprite {
 		_text.x = 4;
 		_text.y = 4;
 		add( _text );
-		
+		/*
 		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.gx + _text.gw + 4;
 		_bg.setInterval( 400 );
 		add( _bg );
+		*/
 		
-		_instructions = new MashBitmapText( "input:up    left  down  right space", 4, 6, 2 );
+		_level = new MashTiles( [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 ], 5 );
+		_level.x = _text.fx + 4;
+		add( _level );
+		
+		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, 2 );
 		_instructions.x = _bg.gx + _bg.gw + 4;
 		_instructions.y = _bg.gy + 4;
 		add( _instructions );

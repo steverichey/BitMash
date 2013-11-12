@@ -5,6 +5,11 @@ import flash.Lib;
 import flash.display.Sprite;
 import flash.events.Event;
 
+/**
+ * This class is generally used for a master playstate-type class, as you can add() and remove() displayobjects.
+ * 
+ * @author Steve Richey
+ */
 class MashSprite extends Sprite {
 	private var members:Array<DisplayObject>;
 	private var ready:Bool;

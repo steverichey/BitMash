@@ -12,7 +12,7 @@
 	
 	<haxelib name="openfl" />
 	
-	<icon path="assets/openfl.svg" />
+	<icon path="assets/bitmash.svg" />
 	
-	<!--<app preloader="BunPreloader" unless="desktop" />-->
+	<app preloader="MashPreloader" unless="desktop" />
 </project>

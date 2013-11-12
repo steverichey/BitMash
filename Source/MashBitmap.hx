@@ -7,15 +7,32 @@ import flash.geom.Matrix;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
+/**
+ * This is the cornerstone of BitMash; it creates a randomly-colored square of the specified square.
+ * 
+ * @author Steve Richey
+ */
 class MashBitmap extends Bitmap {
 	private var _pixelSize:Int;
 	private var _regenTimer:Timer;
 	
+	/**
+	 * Create a shape of dimensions Width and Height with every PixelSize pixels colored the same.
+	 * 
+	 * @param	Width
+	 * @param	Height
+	 * @param	PixelSize
+	 */
 	public function new( Width:Int, Height:Int, PixelSize:Int = 1 ) {
 		_pixelSize = PixelSize;
 		super( generate( Width, Height ), PixelSnapping.ALWAYS, false );
 	}
 	
+	/**
+	 * Randomly re-color this MashBitmap every desired milliseconds.
+	 * 
+	 * @param	desired
+	 */
 	public function setInterval( desired:Int ):Void {
 		if ( _regenTimer != null ) {
 			unsetInterval();
@@ -26,6 +43,9 @@ class MashBitmap extends Bitmap {
 		_regenTimer.start();
 	}
 	
+	/**
+	 * Stop randomly recoloring this item.
+	 */
 	public function unsetInterval():Void
 	{
 		if ( _regenTimer != null ) {
@@ -35,52 +55,76 @@ class MashBitmap extends Bitmap {
 		}
 	}
 	
-	public inline function regenerate( ?t:TimerEvent ):Void {
+	private inline function regenerate( ?t:TimerEvent ):Void {
 		this.bitmapData = generate();
 	}
 	
+	/**
+	 * This object's x position, as an integer.
+	 */
 	public var gx(get, null):Int;
 	
 	private inline function get_gx():Int {
 		return Std.int( this.x );
 	}
 	
+	/**
+	 * This object's y position, as an integer.
+	 */
 	public var gy(get, null):Int;
 	
 	private inline function get_gy():Int {
 		return Std.int( this.y );
 	}
 	
+	/**
+	 * This object's width, as an integer.
+	 */
 	public var gw(get, null):Int;
 	
 	private inline function get_gw():Int {
 		return Std.int( this.width );
 	}
 	
+	/**
+	 * This object's height, as an integer.
+	 */
 	public var gh(get, null):Int;
 	
 	private inline function get_gh():Int {
 		return Std.int( this.height );
 	}
 	
+	/**
+	 * The x value at the horizontal middle of this object.
+	 */
 	public var mx(get, null):Int;
 	
 	private inline function get_mx():Int {
 		return Std.int( this.x + this.width / 2 );
 	}
 	
+	/**
+	 * The y value at the vertical middle of this object.
+	 */
 	public var my(get, null):Int;
 	
 	private inline function get_my():Int {
 		return Std.int( this.y + this.height / 2 );
 	}
 	
+	/**
+	 * The x value at the far right of this object.
+	 */
 	public var fx(get, null):Int;
 	
 	private inline function get_fx():Int {
 		return Std.int( this.x + this.width );
 	}
 	
+	/**
+	 * The y value at the far bottom of this object.
+	 */
 	public var fy(get, null):Int;
 	
 	private inline function get_fy():Int {
@@ -115,7 +159,7 @@ class MashBitmap extends Bitmap {
 		return Std.int( Math.random() * ( 0xffFFFFFF - 0xff000000 ) );
 	}
 	
-	private function randomInt( lo:Int, hi:Int, step:Int = 1 ):Int {
+	private inline function randomInt( lo:Int, hi:Int, step:Int = 1 ):Int {
 		return step * Std.int( Math.random() * ( ( hi / step ) - ( lo / step ) ) + ( lo / step ) );
 	}
 }

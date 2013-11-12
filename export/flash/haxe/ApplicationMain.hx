@@ -8,7 +8,7 @@ import flash.events.Event;
 
 class ApplicationMain {
 
-	static var mPreloader:NMEPreloader;
+	static var mPreloader:MashPreloader;
 
 	public static function main() {
 		
@@ -27,7 +27,7 @@ class ApplicationMain {
 		
 		if (loaded < total || true) /* Always wait for event */ {
 			call_real = false;
-			mPreloader = new NMEPreloader();
+			mPreloader = new MashPreloader();
 			flash.Lib.current.addChild(mPreloader);
 			mPreloader.onInit();
 			mPreloader.onUpdate(loaded,total);

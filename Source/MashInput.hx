@@ -3,6 +3,11 @@ package;
 import flash.events.KeyboardEvent;
 import flash.Lib;
 
+/**
+ * A simple class to accept input; usually instantiated in the BitMash class, and used statically to check for key status in a MashGame class.
+ * 
+ * @author Steve Richey
+ */
 class MashInput {
 	public static var UP:Bool;
 	public static var LEFT:Bool;
