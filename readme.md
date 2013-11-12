@@ -9,3 +9,8 @@ Oh, and it used to be Bit-Thrash, now it's BitMash. Deal with it.
 References:
 http://www.squidi.net/threep/p056/
 http://www.squidi.net/three/entry.php?id=56
+
+Todo:
+* Add license
+* Make better
+* Add shadowifier
