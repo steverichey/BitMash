@@ -1,6 +1,7 @@
 package;
 
 import flash.events.Event;
+import haxe.Log;
 
 /**
  * Main BitMash game class.
@@ -31,13 +32,15 @@ class BitMash extends MashSprite {
 	
 	private function createLevel():Void {
 		_game = new MashGame();
-		add( _game );
+		addChild( _game );
 		_game.addEventListener( Event.COMPLETE, levelEnd );
 	}
 	
 	private function levelEnd( ?e:Event ):Void {
 		_game.removeEventListener( Event.COMPLETE, levelEnd );
-		remove( _game );
+		removeChild( _game );
+		_game.destroy();
+		_game = null;
 		MashLevels.level ++;
 		createLevel();
 	}

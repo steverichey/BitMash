@@ -38,13 +38,13 @@ class MashGame extends MashSprite {
 		add( b );
 		
 		_text = new MashBitmapText( "bitmash", 8, 2, 4 );
-		_text.x = 4;
-		_text.y = 4;
+		_text.x = MOVE_DIST;
+		_text.y = MOVE_DIST;
 		_text.setInterval( 500 );
 		add( _text );
 		
 		_bg = new MashBitmap( 200, 200, MOVE_DIST );
-		_bg.x = _text.gx + _text.gw + 4;
+		_bg.x = _text.fx + MOVE_DIST;
 		_bg.setInterval( 250 );
 		add( _bg );
 		
@@ -53,8 +53,8 @@ class MashGame extends MashSprite {
 		add( _level );*/
 		
 		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, 2 );
-		_instructions.x = _bg.gx + _bg.gw + 4;
-		_instructions.y = _bg.gy + 4;
+		_instructions.x = _bg.fx + MOVE_DIST;
+		_instructions.y = _bg.gy + MOVE_DIST;
 		_instructions.setInterval( 1000 );
 		add( _instructions );
 		

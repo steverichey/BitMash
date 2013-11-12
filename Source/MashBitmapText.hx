@@ -238,7 +238,7 @@ class MashBitmapText extends MashBitmap {
 			}
 		}
 		
-		return w * _size + Std.int( s.length * _size / 2 );
+		return w * _size + Std.int( ( s.length - 1 ) * _size / 2 );
 	}
 	
 	private inline function randomText( len:Int ):String {

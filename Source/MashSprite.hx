@@ -49,14 +49,10 @@ class MashSprite extends Sprite {
 	}
 	
 	private function destroy():Void {
-		removeEventListener( Event.COMPLETE, update );
-		
-		var i:Int = members.length;
+		var i:Int = members.length - 1;
 		
 		while ( i >= 0 ) {
-			removeChild( members[i] );
-			members[i] = null;
-			members.splice( i, 1 );
+			remove( members[i] );
 			i--;
 		}
 	}
