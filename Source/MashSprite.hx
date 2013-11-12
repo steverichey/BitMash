@@ -5,7 +5,7 @@ import flash.Lib;
 import flash.display.Sprite;
 import flash.events.Event;
 
-class ThrSprite extends Sprite {
+class MashSprite extends Sprite {
 	private var members:Array<DisplayObject>;
 	private var ready:Bool;
 	

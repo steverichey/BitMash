@@ -5,7 +5,7 @@ import flash.display.BitmapData;
 import flash.display.PixelSnapping;
 import flash.geom.Matrix;
 
-class ThrBitmap extends Bitmap {
+class MashBitmap extends Bitmap {
 	private var _pixelSize:Int;
 	
 	public function new( Width:Int, Height:Int, PixelSize:Int = 1 ) {

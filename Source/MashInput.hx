@@ -3,7 +3,7 @@ package;
 import flash.events.KeyboardEvent;
 import flash.Lib;
 
-class ThrInput {
+class MashInput {
 	public static var UP:Bool;
 	public static var LEFT:Bool;
 	public static var DOWN:Bool;

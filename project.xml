@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<app title="Bit-Thrash" file="Bit-Thrash" main="Main" version="0.0.1" company="STVR" />
+	<app title="BitMash" file="BitMash" main="Main" version="0.0.1" company="STVR" />
 	
 	<window width="800" height="400" fps="30" orientation="portrait" background="#000000" resizable="true" if="web" />
 	<window width="800" height="400" fps="30" orientation="landscape" background="#000000" fullscreen="false" hardware="true" vsync="true" unless="web" />
@@ -12,7 +12,7 @@
 	
 	<haxelib name="openfl" />
 	
-	<icon path="assets/gnop.svg" />
+	<icon path="assets/openfl.svg" />
 	
 	<!--<app preloader="BunPreloader" unless="desktop" />-->
 </project>

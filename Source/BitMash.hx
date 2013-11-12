@@ -2,10 +2,10 @@ package;
 
 import flash.events.Event;
 
-class BitThrash extends ThrSprite {
-	private var _menu:ThrMenu;
-	private var _game:ThrGame;
-	private var _input:ThrInput;
+class BitMash extends MashSprite {
+	private var _menu:MashMenu;
+	private var _game:MashGame;
+	private var _input:MashInput;
 	
 	public function new() {
 		super();
@@ -14,9 +14,9 @@ class BitThrash extends ThrSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_input = new ThrInput();
+		_input = new MashInput();
 		
-		_menu = new ThrMenu();
+		_menu = new MashMenu();
 		add( _menu );
 		_menu.addEventListener( Event.COMPLETE, onEndMenu );
 	}
@@ -29,7 +29,7 @@ class BitThrash extends ThrSprite {
 		_menu.removeEventListener( Event.COMPLETE, onEndMenu );
 		remove( _menu );
 		
-		//_game = new ThrGame();
-		//add( ThrGame );
+		//_game = new MashGame();
+		//add( _game );
 	}
 }

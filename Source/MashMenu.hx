@@ -4,12 +4,12 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.geom.Point;
 
-class ThrMenu extends ThrSprite {
-	private var _text:ThrBitmapText;
-	private var _bg:ThrBitmap;
-	private var _instructions:ThrBitmapText;
-	private var _player:ThrBitmap;
-	private var _goal:ThrBitmap;
+class MashMenu extends MashSprite {
+	private var _text:MashBitmapText;
+	private var _bg:MashBitmap;
+	private var _instructions:MashBitmapText;
+	private var _player:MashBitmap;
+	private var _goal:MashBitmap;
 	
 	private static inline var MOVE_DIST:Int = 4;
 	
@@ -20,26 +20,26 @@ class ThrMenu extends ThrSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_text = new ThrBitmapText( "bit-mash", 8, 3, 4 );
+		_text = new MashBitmapText( "bitmash", 8, 3, 4 );
 		_text.x = 4;
 		_text.y = 4;
 		add( _text );
 		
-		_bg = new ThrBitmap( 200, 200, 4 );
+		_bg = new MashBitmap( 200, 200, 4 );
 		_bg.x = _text.gx + _text.gw + 4;
 		add( _bg );
 		
-		_instructions = new ThrBitmapText( "input:up    left  down  right space", 4, 6, 2 );
+		_instructions = new MashBitmapText( "input:up    left  down  right space", 4, 6, 2 );
 		_instructions.x = _bg.gx + _bg.gw + 4;
 		_instructions.y = _bg.gy + 4;
 		add( _instructions );
 		
-		_goal = new ThrBitmap( 4, 4, 4 );
+		_goal = new MashBitmap( 4, 4, 1 );
 		_goal.x = randomize( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
 		_goal.y = randomize( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
 		add( _goal );
 		
-		_player = new ThrBitmap( 4, 4, 4 );
+		_player = new MashBitmap( 4, 4, 1 );
 		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
 		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
 		add( _player );
@@ -53,22 +53,22 @@ class ThrMenu extends ThrSprite {
 		if ( ready ) {
 			_bg.regenerate();
 			
-			var tempPlayerX:Int = Std.int( _player.x );
-			var tempPlayerY:Int = Std.int( _player.y );
+			var tempPlayerX:Int = _player.gx;
+			var tempPlayerY:Int = _player.gy;
 			
-			if ( ThrInput.UP ) {
+			if ( MashInput.UP ) {
 				tempPlayerY -= MOVE_DIST;
 			}
 			
-			if ( ThrInput.DOWN ) {
+			if ( MashInput.DOWN ) {
 				tempPlayerY += MOVE_DIST;
 			}
 			
-			if ( ThrInput.LEFT ) {
+			if ( MashInput.LEFT ) {
 				tempPlayerX -= MOVE_DIST;
 			}
 			
-			if ( ThrInput.RIGHT ) {
+			if ( MashInput.RIGHT ) {
 				tempPlayerX += MOVE_DIST;
 			}
 			

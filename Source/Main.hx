@@ -34,7 +34,7 @@ class Main extends Sprite
 		
 		initialize();
 		
-		var game:Sprite = new BitThrash();
+		var game:Sprite = new BitMash();
 		game.scaleX = 2.0;
 		game.scaleY = 2.0;
 		addChild( game );

@@ -4,10 +4,10 @@ import flash.Lib;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 
-class ThrGame extends ThrSprite {
-	private var _player:ThrBitmap;
-	private var _goal:ThrBitmap;
-	private var _level:ThrBitmap;
+class MashGame extends MashSprite {
+	private var _player:MashBitmap;
+	private var _goal:MashBitmap;
+	private var _level:MashBitmap;
 	
 	public function new() {
 		super();
@@ -16,11 +16,11 @@ class ThrGame extends ThrSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_player = new ThrBitmap( 16, 16 );
-		_goal = new ThrBitmap( 16, 16 );
+		_player = new MashBitmap( 16, 16 );
+		_goal = new MashBitmap( 16, 16 );
 		_goal.x = randomize( 0, Std.int( 300 - _goal.width ) );
 		_goal.y = randomize( 0, Std.int( 300 - _goal.height ) );
-		_level = new ThrBitmap( 300, 300 );
+		_level = new MashBitmap( 300, 300 );
 		
 		add( _level );
 		add( _goal );

@@ -4,7 +4,7 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 
-class ThrBitmapText extends ThrBitmap {
+class MashBitmapText extends MashBitmap {
 	private var _w:Int;
 	private var _h:Int;
 	private var _text:String;
@@ -184,7 +184,7 @@ class ThrBitmapText extends ThrBitmap {
 		
 		for ( i in arr ) {
 			if ( i == 1 ) {
-				bd.draw( new ThrBitmap( _size, _size, _pixelSize ), new Matrix( 1, 0, 0, 1, posX, posY ) );
+				bd.draw( new MashBitmap( _size, _size, _pixelSize ), new Matrix( 1, 0, 0, 1, posX, posY ) );
 			}
 			
 			posX += _size;

@@ -16,7 +16,7 @@ class ApplicationMain {
 		
 		var call_real = true;
 		
-		//nme.Lib.setPackage("STVR", "Bit-Thrash", "com.example.myapp", "0.0.1");
+		//nme.Lib.setPackage("STVR", "BitMash", "com.example.myapp", "0.0.1");
 		
 		
 		var loaded:Int = flash.Lib.current.loaderInfo.bytesLoaded;
