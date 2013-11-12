@@ -8,13 +8,14 @@ import flash.events.TimerEvent;
 import flash.utils.Timer;
 
 /**
- * This is the cornerstone of BitMash; it creates a randomly-colored square of the specified square.
+ * This is the cornerstone of BitMash; it creates a randomly-colored rectangle of the specified size.
  * 
  * @author Steve Richey
  */
 class MashBitmap extends Bitmap {
 	private var _pixelSize:Int;
 	private var _regenTimer:Timer;
+	private var _rect:MashRect;
 	
 	/**
 	 * Create a shape of dimensions Width and Height with every PixelSize pixels colored the same.

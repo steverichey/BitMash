@@ -21,8 +21,12 @@ class BitMash extends MashSprite {
 		createLevel();
 	}
 	
-	override private function update( ?e:Event ):Void {
-		super.update( e );
+	override public function update( ?e:Event ):Void {
+		super.update(e);
+		
+		if ( _game != null ) {
+			_game.update(e);
+		}
 	}
 	
 	private function createLevel():Void {

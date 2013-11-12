@@ -31,11 +31,9 @@ class MashSprite extends Sprite {
 		
 		members = [];
 		ready = false;
-		
-		addEventListener( Event.ENTER_FRAME, update );
 	}
 	
-	private function update( ?e:Event ):Void {
+	public function update( ?e:Event ):Void {
 		
 	}
 	

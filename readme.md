@@ -14,3 +14,6 @@ Todo:
 * Add license
 * Make better
 * Add shadowifier
+* Make text an extension of tiles?
+* Collisions!
+* Glitch effect?

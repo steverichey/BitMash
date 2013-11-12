@@ -1,5 +1,7 @@
 package;
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.geom.Point;
@@ -10,6 +12,7 @@ import flash.geom.Point;
  * @author Steve Richey
  */
 class MashGame extends MashSprite {
+	private var _superBG:MashBitmap;
 	private var _text:MashBitmapText;
 	private var _bg:MashBitmap;
 	private var _level:MashTiles;
@@ -27,24 +30,32 @@ class MashGame extends MashSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_text = new MashBitmapText( "bitmash", 8, 3, 4 );
+		_superBG = new MashBitmap( 400, 200, MOVE_DIST * 4 );
+		_superBG.setInterval( 400 );
+		add( _superBG );
+		
+		var b:Bitmap = new Bitmap( new BitmapData( 400, 200, true, 0xaa000000 ) );
+		add( b );
+		
+		_text = new MashBitmapText( "bitmash", 8, 2, 4 );
 		_text.x = 4;
 		_text.y = 4;
+		_text.setInterval( 500 );
 		add( _text );
 		
 		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.gx + _text.gw + 4;
-		//_bg.setInterval( 400 );
-		//add( _bg );
+		_bg.setInterval( 250 );
+		add( _bg );
 		
-		
-		_level = new MashTiles( [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 ], 5, MOVE_DIST * SIZE, MOVE_DIST );
+		/*_level = new MashTiles( MashTiles.generateEmptySquare( 10, 10 ), 10, 16, 8 );
 		_level.x = _text.fx + 4;
-		add( _level );
+		add( _level );*/
 		
 		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, 2 );
 		_instructions.x = _bg.gx + _bg.gw + 4;
 		_instructions.y = _bg.gy + 4;
+		_instructions.setInterval( 1000 );
 		add( _instructions );
 		
 		_goal = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
@@ -56,34 +67,33 @@ class MashGame extends MashSprite {
 		_player = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
 		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
 		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
-		_player.setInterval( 34 );
+		_player.setInterval( 17 );
 		add( _player );
 		
 		ready = true;
 	}
 	
-	override private function update( ?e:Event ):Void {
+	override public function update( ?e:Event ):Void {
 		super.update( e );
 		
 		if ( ready ) {
-			//_bg.regenerate();
 			
 			var tempPlayerX:Int = _player.gx;
 			var tempPlayerY:Int = _player.gy;
 			
-			if ( MashInput.UP ) {
+			if ( MashInput.up.pressed ) {
 				tempPlayerY -= MOVE_DIST;
 			}
 			
-			if ( MashInput.DOWN ) {
+			if ( MashInput.down.pressed ) {
 				tempPlayerY += MOVE_DIST;
 			}
 			
-			if ( MashInput.LEFT ) {
+			if ( MashInput.left.pressed ) {
 				tempPlayerX -= MOVE_DIST;
 			}
 			
-			if ( MashInput.RIGHT ) {
+			if ( MashInput.right.pressed ) {
 				tempPlayerX += MOVE_DIST;
 			}
 			
@@ -95,7 +105,7 @@ class MashGame extends MashSprite {
 				_player.y = tempPlayerY;
 			}
 			
-			if ( _player.x == _goal.x && _player.y == _goal.y ) {
+			if ( MashTools.overlap( _player, _goal ) ) {
 				ready = false;
 				dispatchEvent( new Event( Event.COMPLETE ) );
 			}

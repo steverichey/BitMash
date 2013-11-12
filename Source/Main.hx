@@ -1,5 +1,8 @@
 package;
 
+import flash.display.BlendMode;
+import flash.geom.Matrix;
+import flash.geom.Transform;
 import flash.Lib;
 import flash.geom.Rectangle;
 import flash.events.Event;
@@ -12,6 +15,8 @@ class Main extends Sprite {
 	static public function main():Void {	
 		Lib.current.addChild( new Main() );
 	}
+	
+	private var _game:MashSprite;
 	
 	public function new() {
 		super();
@@ -30,10 +35,31 @@ class Main extends Sprite {
 		
 		initialize();
 		
-		var game:Sprite = new BitMash();
-		game.scaleX = 2.0;
-		game.scaleY = 2.0;
-		addChild( game );
+		_game = new BitMash();
+		_game.scaleX = 2.0;
+		_game.scaleY = 2.0;
+		addChild( _game );
+		
+		addEventListener( Event.ENTER_FRAME, update );
+	}
+	
+	private function update( ?e:Event ) {
+		/*var rand = Math.random();
+		
+		if ( rand < 0.1 ) {
+			_game.blendMode = BlendMode.INVERT;
+		} else if ( _game.blendMode != BlendMode.NORMAL ) {
+			_game.blendMode = BlendMode.NORMAL;
+		}
+		
+		if ( rand < 0.2 ) {
+			_game.transform.matrix = new Matrix( 2, 0, Math.random() * 2 - 1, 2 );
+			_game.x = ( Lib.current.stage.stageWidth - _game.width ) / 2;
+		} else if ( _game.transform.matrix != new Matrix(2,0,0,2) ) {
+			_game.transform.matrix = new Matrix(2,0,0,2);
+		}
+		*/
+		_game.update( e );
 	}
 	
 	private function initialize():Void {

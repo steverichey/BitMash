@@ -17,9 +17,7 @@ class MashTiles extends MashBitmap {
 		_array = TileArray;
 		_width = Width;
 		_tileSize = TileSize;
-		_pixelSize =  PixelSize;
-		
-		super( 1, 1, 1 );
+		super( 1, 1, PixelSize );
 	}
 	
 	override private function generate( ?w:Int, ?h:Int ):BitmapData {
@@ -43,5 +41,29 @@ class MashTiles extends MashBitmap {
 		}
 		
 		return bd;
+	}
+	
+	inline static public function generateEmptySquare( Width:Int, Height:Int ):Array<Int> {
+		var a:Array<Int> = [];
+		
+		for ( i in 0...Width ) {
+			a.push(1);
+		}
+		
+		for ( i in 0...( Height - 2 ) ) {
+			for ( o in 0...Width ) {
+				if ( o == 0 || o == Width - 1 ) {
+					a.push(1);
+				} else {
+					a.push(0);
+				}
+			}
+		}
+		
+		for ( i in 0...Width ) {
+			a.push(1);
+		}
+		
+		return a;
 	}
 }
