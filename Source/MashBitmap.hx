@@ -4,16 +4,38 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.PixelSnapping;
 import flash.geom.Matrix;
+import flash.events.TimerEvent;
+import flash.utils.Timer;
 
 class MashBitmap extends Bitmap {
 	private var _pixelSize:Int;
+	private var _regenTimer:Timer;
 	
 	public function new( Width:Int, Height:Int, PixelSize:Int = 1 ) {
 		_pixelSize = PixelSize;
 		super( generate( Width, Height ), PixelSnapping.ALWAYS, false );
 	}
 	
-	public inline function regenerate():Void {
+	public function setInterval( desired:Int ):Void {
+		if ( _regenTimer != null ) {
+			unsetInterval();
+		}
+		
+		_regenTimer = new Timer( desired );
+		_regenTimer.addEventListener( TimerEvent.TIMER, regenerate );
+		_regenTimer.start();
+	}
+	
+	public function unsetInterval():Void
+	{
+		if ( _regenTimer != null ) {
+			_regenTimer.stop();
+			_regenTimer.removeEventListener( TimerEvent.TIMER, regenerate );
+			_regenTimer = null;
+		}
+	}
+	
+	public inline function regenerate( ?t:TimerEvent ):Void {
 		this.bitmapData = generate();
 	}
 	
@@ -65,7 +87,7 @@ class MashBitmap extends Bitmap {
 		return Std.int( this.y + this.height );
 	}
 	
-	private inline function generate( ?w:Int, ?h:Int ):BitmapData {
+	private function generate( ?w:Int, ?h:Int ):BitmapData {
 		var temp:BitmapData;
 		
 		if ( w != null ) {
@@ -91,5 +113,9 @@ class MashBitmap extends Bitmap {
 	
 	private inline function randomColor():UInt {
 		return Std.int( Math.random() * ( 0xffFFFFFF - 0xff000000 ) );
+	}
+	
+	private function randomInt( lo:Int, hi:Int, step:Int = 1 ):Int {
+		return step * Std.int( Math.random() * ( ( hi / step ) - ( lo / step ) ) + ( lo / step ) );
 	}
 }

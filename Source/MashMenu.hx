@@ -11,6 +11,7 @@ class MashMenu extends MashSprite {
 	private var _player:MashBitmap;
 	private var _goal:MashBitmap;
 	
+	private static inline var SIZE:Int = 3;
 	private static inline var MOVE_DIST:Int = 4;
 	
 	public function new() {
@@ -25,8 +26,9 @@ class MashMenu extends MashSprite {
 		_text.y = 4;
 		add( _text );
 		
-		_bg = new MashBitmap( 200, 200, 4 );
+		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.gx + _text.gw + 4;
+		_bg.setInterval( 400 );
 		add( _bg );
 		
 		_instructions = new MashBitmapText( "input:up    left  down  right space", 4, 6, 2 );
@@ -34,14 +36,16 @@ class MashMenu extends MashSprite {
 		_instructions.y = _bg.gy + 4;
 		add( _instructions );
 		
-		_goal = new MashBitmap( 4, 4, 1 );
+		_goal = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
 		_goal.x = randomize( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
 		_goal.y = randomize( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
+		_goal.setInterval( 17 );
 		add( _goal );
 		
-		_player = new MashBitmap( 4, 4, 1 );
+		_player = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
 		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
 		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
+		_player.setInterval( 34 );
 		add( _player );
 		
 		ready = true;
@@ -51,7 +55,7 @@ class MashMenu extends MashSprite {
 		super.update( e );
 		
 		if ( ready ) {
-			_bg.regenerate();
+			//_bg.regenerate();
 			
 			var tempPlayerX:Int = _player.gx;
 			var tempPlayerY:Int = _player.gy;

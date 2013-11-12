@@ -20,7 +20,11 @@ class MashBitmapText extends MashBitmap {
 	private static inline var W_WIDTH:Int = 5;
 	
 	public function new( text:String, size:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1 ) {
-		_text = text.toUpperCase();
+		if ( text == "" ) {
+			_text = randomText( 10 );
+		} else {
+			_text = text.toUpperCase();
+		}
 		
 		if ( size > 0 ) {
 			_size = size;
@@ -81,7 +85,7 @@ class MashBitmapText extends MashBitmap {
 		return h * _size + ( h - 1 ) * Std.int( _size / 2 );
 	}
 	
-	override private inline function generate( ?w:Int, ?h:Int ):BitmapData {
+	override private function generate( ?w:Int, ?h:Int ):BitmapData {
 		var bd:BitmapData = new BitmapData( _w, _h, true, 0 );
 		var posX:Int = 0;
 		var posY:Int = 0;
@@ -230,5 +234,23 @@ class MashBitmapText extends MashBitmap {
 		}
 		
 		return w * _size + Std.int( s.length * _size / 2 );
+	}
+	
+	private inline function randomText( len:Int ):String {
+		var s:String = "";
+		
+		while ( s.length < len ) {
+			s += randomLetter();
+		}
+		
+		return s;
+	}
+	
+	private inline static function LETTER_ARRAY():Array<String> {
+		return [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " " ];
+	}
+	
+	private inline function randomLetter():String {
+		return LETTER_ARRAY()[ randomInt( 0, LETTER_ARRAY().length ) ];
 	}
 }
