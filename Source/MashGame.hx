@@ -31,14 +31,14 @@ class MashGame extends MashSprite {
 		_text.x = 4;
 		_text.y = 4;
 		add( _text );
-		/*
+		
 		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.gx + _text.gw + 4;
-		_bg.setInterval( 400 );
-		add( _bg );
-		*/
+		//_bg.setInterval( 400 );
+		//add( _bg );
 		
-		_level = new MashTiles( [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 ], 5 );
+		
+		_level = new MashTiles( [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 ], 5, MOVE_DIST * SIZE, MOVE_DIST );
 		_level.x = _text.fx + 4;
 		add( _level );
 		

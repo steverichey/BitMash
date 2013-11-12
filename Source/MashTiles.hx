@@ -36,6 +36,7 @@ class MashTiles extends MashBitmap {
 				}
 				
 				posX += _tileSize;
+				current ++;
 			}
 			posX = 0;
 			posY += _tileSize;
