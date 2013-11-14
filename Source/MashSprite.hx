@@ -1,6 +1,7 @@
 package;
 
 import flash.display.DisplayObject;
+import flash.geom.Rectangle;
 import flash.Lib;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -57,12 +58,16 @@ class MashSprite extends Sprite {
 		}
 	}
 	
-	private inline function getWidth():Int {
+	public inline function getWidth():Int {
 		return Std.int( this.width );
 	}
 	
-	private inline function getHeight():Int {
+	public inline function getHeight():Int {
 		return Std.int( this.height );
+	}
+	
+	public inline function getRectangle():Rectangle {
+		return new Rectangle( this.x, this.y, getWidth(), getHeight() );
 	}
 	
 	private function randomize( lo:Int, hi:Int, step:Int = 1 ):Int {

@@ -5,12 +5,13 @@
 	<window width="800" height="400" fps="30" orientation="portrait" background="#000000" resizable="true" if="web" />
 	<window width="800" height="400" fps="30" orientation="landscape" background="#000000" fullscreen="false" hardware="true" vsync="true" unless="web" />
 	
-	<set name="SWF_VERSION" value="11.2" />
+	<set name="SWF_VERSION" value="11.4" />
 	<set name="BUILD_DIR" value="export" />
 	
 	<classpath name="source" />
 	
 	<haxelib name="openfl" />
+	<haxelib name="format" />
 	
 	<icon path="assets/bitmash.svg" />
 	

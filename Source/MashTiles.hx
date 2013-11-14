@@ -17,6 +17,7 @@ class MashTiles extends MashBitmap {
 		_array = TileArray;
 		_width = Width;
 		_tileSize = TileSize;
+		moves = false;
 		super( 1, 1, PixelSize );
 	}
 	

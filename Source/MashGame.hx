@@ -30,14 +30,10 @@ class MashGame extends MashSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_superBG = new MashBitmap( 400, 200, MOVE_DIST * 4 );
-		_superBG.setInterval( 400 );
-		add( _superBG );
+		_superBG = new MashBitmap( 400, 200, MOVE_DIST );
+		add( new Bitmap( new BitmapData( 400, 200, false, 0xff000000 ) ) );
 		
-		var b:Bitmap = new Bitmap( new BitmapData( 400, 200, true, 0xaa000000 ) );
-		add( b );
-		
-		_text = new MashBitmapText( "bitmash", 8, 2, 4 );
+		_text = new MashBitmapText( "bitmash", 8, 2, MOVE_DIST );
 		_text.x = MOVE_DIST;
 		_text.y = MOVE_DIST;
 		_text.setInterval( 500 );
@@ -46,15 +42,16 @@ class MashGame extends MashSprite {
 		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.fx + MOVE_DIST;
 		_bg.setInterval( 250 );
-		add( _bg );
+		//add( _bg );
 		
-		/*_level = new MashTiles( MashTiles.generateEmptySquare( 10, 10 ), 10, 16, 8 );
-		_level.x = _text.fx + 4;
-		add( _level );*/
+		_level = new MashTiles( MashTiles.generateEmptySquare( 12, 12 ), 12, MOVE_DIST, MOVE_DIST );
+		_level.x = _text.fx + MOVE_DIST;
+		_level.y = MOVE_DIST;
+		//add( _level );
 		
-		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, 2 );
+		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, MOVE_DIST );
 		_instructions.x = _bg.fx + MOVE_DIST;
-		_instructions.y = _bg.gy + MOVE_DIST;
+		_instructions.y = MOVE_DIST;
 		_instructions.setInterval( 1000 );
 		add( _instructions );
 		
@@ -68,6 +65,7 @@ class MashGame extends MashSprite {
 		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
 		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
 		_player.setInterval( 17 );
+		_player.moves = true;
 		add( _player );
 		
 		ready = true;
@@ -97,6 +95,10 @@ class MashGame extends MashSprite {
 				tempPlayerX += MOVE_DIST;
 			}
 			
+			if ( MashInput.space.pressed ) {
+				haxe.Log.trace( "Player at: " + _player.x + ", " + _player.y );
+			}
+			
 			if ( tempPlayerX >= _bg.x && tempPlayerX + _player.width <= _bg.x + _bg.width ) {
 				_player.x = tempPlayerX;
 			}
@@ -104,6 +106,11 @@ class MashGame extends MashSprite {
 			if ( tempPlayerY >= _bg.y && tempPlayerY + _player.height <= _bg.y + _bg.height ) {
 				_player.y = tempPlayerY;
 			}
+			
+			_player.x = tempPlayerX;
+			_player.y = tempPlayerY;
+			
+			//MashTools.collide( _player, _level );
 			
 			if ( MashTools.overlap( _player, _goal ) ) {
 				ready = false;

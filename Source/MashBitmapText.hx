@@ -50,6 +50,8 @@ class MashBitmapText extends MashBitmap {
 		_w = predictWidth();
 		_h = predictHeight();
 		
+		moves = false;
+		
 		super( _w, _h, _pixelSize );
 	}
 	
