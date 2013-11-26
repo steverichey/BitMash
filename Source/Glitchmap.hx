@@ -83,7 +83,7 @@ class Glitchmap extends Sprite {
 		var dataToGlitch:BitmapData = new BitmapData( Source.getWidth(), Source.getHeight(), false );
 		dataToGlitch.draw( Source );
 		_bytesSource.position = 0;
-		_bytesSource = dataToGlitch.encode( Source.getRectangle(),  );
+		//_bytesSource = dataToGlitch.encode( Source.getRectangle(),  );
 		
 		// save to file:
 		//var f = neko.io.File.write('test.png', true);

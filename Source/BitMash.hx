@@ -1,6 +1,9 @@
 package;
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.events.Event;
+import flash.text.TextField;
 import haxe.Log;
 
 /**
@@ -14,19 +17,30 @@ class BitMash extends MashSprite {
 	private var _input:MashInput;
 	private var _test:Glitchmap;
 	
+	// seed test
+	private var lkj:TextField;
+	private var asdf:Bitmap;
+	
 	public function new() {
 		super();
 	}
 	
 	override private function init( ?e:Event ):Void {
 		super.init( e );
+		
 		_input = new MashInput();
+		lkj = new TextField();
+		addChild( lkj );
+		asdf = new Bitmap( new BitmapData( 50, 50, false, 0 ) );
+		asdf.y = 40;
+		addChild( asdf );
+		/*
 		//_displayed = new MashGlitch( this.getWidth(), this.getHeight() );
 		//addChild( _displayed );
 		_test = new Glitchmap( "C:/Users/Steve/Documents/Development/BitMash/Assets/test.jpg" );
 		addChild( _test );
 		//_test.addEventListener( Event.CHANGE, onChange );
-		createLevel();
+		createLevel();*/
 	}
 	
 	override public function update( ?e:Event ):Void {
@@ -41,6 +55,11 @@ class BitMash extends MashSprite {
 			if ( _game != null ) {
 				_test.draw( _game );
 			}
+		}
+		
+		if ( MashInput.up.pressed ) {
+			lkj.text = Std.string( MashRandom.int() );
+			asdf.bitmapData = new BitmapData( 50, 50, false, MashRandom.int() );
 		}
 	}
 	

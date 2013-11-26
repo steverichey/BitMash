@@ -34,9 +34,7 @@
 
 package;
 
-import flash.geom.*;
-import flash.display.*;
-import flash.utils.*;
+import flash.utils.ByteArray;
 	
 /**
  * Class that converts BitmapData into a valid JPEG
@@ -56,22 +54,22 @@ class JPGEncoder {
 					35, 36, 48, 49, 57, 58, 62, 63 ];
 	}
 	
-	private var YTable:Array = new Array<Int>(64);
-	private var UVTable:Array = new Array<Int>(64);
-	private var fdtbl_Y:Array = new Array<Int>(64);
-	private var fdtbl_UV:Array = new Array<Int>(64);
+	private var YTable:Array<Int> = new Array<Int>(64);
+	private var UVTable:Array<Int> = new Array<Int>(64);
+	private var fdtbl_Y:Array<Int> = new Array<Int>(64);
+	private var fdtbl_UV:Array<Int> = new Array<Int>(64);
 	
 	private function initQuantTables( sf:Int ):Void {
 		var i:Int;
 		var t:Float;
-		var YQT:Array = [ 	16, 11, 10, 16, 24, 40, 51, 61,
-							12, 12, 14, 19, 26, 58, 60, 55,
-							14, 13, 16, 24, 40, 57, 69, 56,
-							14, 17, 22, 29, 51, 87, 80, 62,
-							18, 22, 37, 56, 68, 109, 103, 77,
-							24, 35, 55, 64, 81, 104, 113, 92,
-							49, 64, 78, 87, 103, 121, 120, 101,
-							72, 92, 95, 98, 112, 100, 103, 99 ];
+		var YQT:Array<Int> = [ 	16, 11, 10, 16, 24, 40, 51, 61,
+								12, 12, 14, 19, 26, 58, 60, 55,
+								14, 13, 16, 24, 40, 57, 69, 56,
+								14, 17, 22, 29, 51, 87, 80, 62,
+								18, 22, 37, 56, 68, 109, 103, 77,
+								24, 35, 55, 64, 81, 104, 113, 92,
+								49, 64, 78, 87, 103, 121, 120, 101,
+								72, 92, 95, 98, 112, 100, 103, 99 ];
 		
 		for ( i 0...YQT.length ) {
 			t = Math.floor( ( YQT[i]*sf + 50 ) / 100 );
@@ -85,14 +83,14 @@ class JPGEncoder {
 			YTable[ ZIG_ZAG()[i] ] = t;
 		}
 		
-		var UVQT:Array = [ 	17, 18, 24, 47, 99, 99, 99, 99,
-							18, 21, 26, 66, 99, 99, 99, 99,
-							24, 26, 56, 99, 99, 99, 99, 99,
-							47, 66, 99, 99, 99, 99, 99, 99,
-							99, 99, 99, 99, 99, 99, 99, 99,
-							99, 99, 99, 99, 99, 99, 99, 99,
-							99, 99, 99, 99, 99, 99, 99, 99,
-							99, 99, 99, 99, 99, 99, 99, 99 ];
+		var UVQT:Array<Int> = [ 	17, 18, 24, 47, 99, 99, 99, 99,
+									18, 21, 26, 66, 99, 99, 99, 99,
+									24, 26, 56, 99, 99, 99, 99, 99,
+									47, 66, 99, 99, 99, 99, 99, 99,
+									99, 99, 99, 99, 99, 99, 99, 99,
+									99, 99, 99, 99, 99, 99, 99, 99,
+									99, 99, 99, 99, 99, 99, 99, 99,
+									99, 99, 99, 99, 99, 99, 99, 99 ];
 		
 		for ( i in 0...UVQT.length ) {
 			t = Math.floor( ( UVQT[i] * sf + 50 ) / 100 );
@@ -103,7 +101,7 @@ class JPGEncoder {
 				t = 255;
 			}
 			
-			UVTable[ ZigZag[i] ] = t;
+			UVTable[ ZIG_ZAG()[i] ] = t;
 		}
 		
 		var aasf:Array = [	1.0, 1.387039845, 1.306562965, 1.175875602,
@@ -113,22 +111,22 @@ class JPGEncoder {
 		
 		for ( row in 0...8 ) {
 			for ( col in 0...8 ) { 
-				fdtbl_Y[i]  = ( 1.0 / ( YTable [ZigZag[i]] * aasf[row] * aasf[col] * 8.0 ) );
-				fdtbl_UV[i] = ( 1.0 / ( UVTable[ZigZag[i]] * aasf[row] * aasf[col] * 8.0 ) );
+				fdtbl_Y[i]  = ( 1.0 / ( YTable [ZIG_ZAG()[i]] * aasf[row] * aasf[col] * 8.0 ) );
+				fdtbl_UV[i] = ( 1.0 / ( UVTable[ZIG_ZAG()[i]] * aasf[row] * aasf[col] * 8.0 ) );
 				i++;
 			}
 		}
 	}
 	
-	private var YDC_HT:Array;
-	private var UVDC_HT:Array;
-	private var YAC_HT:Array;
-	private var UVAC_HT:Array;
+	private var YDC_HT:Array<BitString>;
+	private var UVDC_HT:Array<BitString>;
+	private var YAC_HT:Array<BitString>;
+	private var UVAC_HT:Array<BitString>;
 	
-	private function computeHuffmanTbl( nrcodes:Array, std_table:Array ):Array {
+	private function computeHuffmanTbl( nrcodes:Array<Int>, std_table:Array<Int> ):Array<BitString> {
 		var codevalue:Int = 0;
 		var pos_in_table:Int = 0;
-		var HT:Array = new Array();
+		var HT:Array<BitString> = new Array<BitString>();
 		
 		for (var k:int=1; k<=16; k++) {
 			for (var j:int=1; j<=nrcodes[k]; j++) {
@@ -189,55 +187,51 @@ class JPGEncoder {
 	}
 	
 	private static inline function STD_AC_CHROMINANCE_NRCODES():Array<Int> {
-		return 
+		return [0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77];
 	}
 	
+	private static inline function STD_AC_CHROMINANCE_VALUES():Array<Int> {
+		return [0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21,
+				0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71,
+				0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91,
+				0xa1, 0xb1, 0xc1, 0x09, 0x23, 0x33, 0x52, 0xf0,
+				0x15, 0x62, 0x72, 0xd1, 0x0a, 0x16, 0x24, 0x34,
+				0xe1, 0x25, 0xf1, 0x17, 0x18, 0x19, 0x1a, 0x26,
+				0x27, 0x28, 0x29, 0x2a, 0x35, 0x36, 0x37, 0x38,
+				0x39, 0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48,
+				0x49, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58,
+				0x59, 0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68,
+				0x69, 0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78,
+				0x79, 0x7a, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
+				0x88, 0x89, 0x8a, 0x92, 0x93, 0x94, 0x95, 0x96,
+				0x97, 0x98, 0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5,
+				0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4,
+				0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3,
+				0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2,
+				0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda,
+				0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9,
+				0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
+				0xf9, 0xfa ];
+	}
 	
-	
-	private var std_ac_chrominance_nrcodes:Array = [0,0,2,1,2,4,4,3,4,7,5,4,4,0,1,2,0x77];
-	private var std_ac_chrominance_values:Array = [
-		0x00,0x01,0x02,0x03,0x11,0x04,0x05,0x21,
-		0x31,0x06,0x12,0x41,0x51,0x07,0x61,0x71,
-		0x13,0x22,0x32,0x81,0x08,0x14,0x42,0x91,
-		0xa1,0xb1,0xc1,0x09,0x23,0x33,0x52,0xf0,
-		0x15,0x62,0x72,0xd1,0x0a,0x16,0x24,0x34,
-		0xe1,0x25,0xf1,0x17,0x18,0x19,0x1a,0x26,
-		0x27,0x28,0x29,0x2a,0x35,0x36,0x37,0x38,
-		0x39,0x3a,0x43,0x44,0x45,0x46,0x47,0x48,
-		0x49,0x4a,0x53,0x54,0x55,0x56,0x57,0x58,
-		0x59,0x5a,0x63,0x64,0x65,0x66,0x67,0x68,
-		0x69,0x6a,0x73,0x74,0x75,0x76,0x77,0x78,
-		0x79,0x7a,0x82,0x83,0x84,0x85,0x86,0x87,
-		0x88,0x89,0x8a,0x92,0x93,0x94,0x95,0x96,
-		0x97,0x98,0x99,0x9a,0xa2,0xa3,0xa4,0xa5,
-		0xa6,0xa7,0xa8,0xa9,0xaa,0xb2,0xb3,0xb4,
-		0xb5,0xb6,0xb7,0xb8,0xb9,0xba,0xc2,0xc3,
-		0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xd2,
-		0xd3,0xd4,0xd5,0xd6,0xd7,0xd8,0xd9,0xda,
-		0xe2,0xe3,0xe4,0xe5,0xe6,0xe7,0xe8,0xe9,
-		0xea,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,
-		0xf9,0xfa
-	];
-
-	private function initHuffmanTbl():void
-	{
-		YDC_HT = computeHuffmanTbl(std_dc_luminance_nrcodes,std_dc_luminance_values);
-		UVDC_HT = computeHuffmanTbl(std_dc_chrominance_nrcodes,std_dc_chrominance_values);
-		YAC_HT = computeHuffmanTbl(std_ac_luminance_nrcodes,std_ac_luminance_values);
-		UVAC_HT = computeHuffmanTbl(std_ac_chrominance_nrcodes,std_ac_chrominance_values);
+	private function initHuffmanTbl():Void {
+		YDC_HT = computeHuffmanTbl( STD_DC_LUMINANCE_NRCODES(), STD_DC_LUMINANCE_VALUES() );
+		UVDC_HT = computeHuffmanTbl( STD_DC_CHROMINANCE_NRCODES(), STD_DC_CHROMINANCE_VALUES() );
+		YAC_HT = computeHuffmanTbl( STD_AC_LUMINANCE_NRCODES(), STD_AC_LUMINANCE_VALUES() );
+		UVAC_HT = computeHuffmanTbl( STD_AC_CHROMINANCE_NRCODES(), STD_AC_CHROMINANCE_VALUES() );
 	}
 
-	private var bitcode:Array = new Array(65535);
-	private var category:Array = new Array(65535);
+	private var bitcode:Array<BitString> = new Array<BitString>(65535);
+	private var category:Array<BitString> = new Array<BitString>(65535);
 
-	private function initCategoryNumber():void
-	{
-		var nrlower:int = 1;
-		var nrupper:int = 2;
-		var nr:int;
-		for (var cat:int=1; cat<=15; cat++) {
+	private function initCategoryNumber():Void {
+		var nrlower:Int = 1;
+		var nrupper:Int = 2;
+		var nr:Int;
+		
+		for ( cat in 0...15 ) {
 			//Positive numbers
-			for (nr=nrlower; nr<nrupper; nr++) {
+			for ( nr in nrlower...nrupper ) {
 				category[32767+nr] = cat;
 				bitcode[32767+nr] = new BitString();
 				bitcode[32767+nr].len = cat;
@@ -254,52 +248,51 @@ class JPGEncoder {
 			nrupper <<= 1;
 		}
 	}
-
+	
 	// IO functions
-
+	
 	private var byteout:ByteArray;
-	private var bytenew:int = 0;
-	private var bytepos:int = 7;
+	private static inline var BYTE_NEW:Int = 0;
+	private static inline var BYTE_POS:Int = 7;
 
-	private function writeBits(bs:BitString):void
-	{
-		var value:int = bs.val;
-		var posval:int = bs.len-1;
+	private function writeBits( bs:BitString ):Void {
+		var value:Int = bs.val;
+		var posval:Int = bs.len - 1;
+		
 		while ( posval >= 0 ) {
-			if (value & uint(1 << posval) ) {
-				bytenew |= uint(1 << bytepos);
+			if (value & Std.int(1 << posval) ) {
+				bytenew |= Std.int(1 << bytepos);
 			}
+			
 			posval--;
 			bytepos--;
+			
 			if (bytepos < 0) {
 				if (bytenew == 0xFF) {
 					writeByte(0xFF);
 					writeByte(0);
-				}
-				else {
+				} else {
 					writeByte(bytenew);
 				}
-				bytepos=7;
-				bytenew=0;
+				
+				bytepos = 7;
+				bytenew = 0;
 			}
 		}
 	}
 
-	private function writeByte(value:int):void
-	{
-		byteout.writeByte(value);
+	private function writeByte( value:Int ):Void {
+		byteout.writeByte( value );
 	}
 
-	private function writeWord(value:int):void
-	{
+	private function writeWord( value:Int ):Void {
 		writeByte((value>>8)&0xFF);
 		writeByte((value   )&0xFF);
 	}
 
 	// DCT & quantization core
 
-	private function fDCTQuant(data:Array, fdtbl:Array):Array
-	{
+	private function fDCTQuant(data:Array, fdtbl:Array):Array {
 		var tmp0:Number, tmp1:Number, tmp2:Number, tmp3:Number, tmp4:Number, tmp5:Number, tmp6:Number, tmp7:Number;
 		var tmp10:Number, tmp11:Number, tmp12:Number, tmp13:Number;
 		var z1:Number, z2:Number, z3:Number, z4:Number, z5:Number, z11:Number, z13:Number;
@@ -527,7 +520,7 @@ class JPGEncoder {
 		var DU_DCT:Array = fDCTQuant(CDU, fdtbl);
 		//ZigZag reorder
 		for (i=0;i<64;i++) {
-			DU[ZigZag[i]]=DU_DCT[i];
+			DU[ZIG_ZAG()[i]]=DU_DCT[i];
 		}
 		var Diff:int = DU[0] - DC; DC = DU[0];
 		//Encode DC
