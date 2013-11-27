@@ -8,12 +8,9 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Rectangle;
 import flash.utils.ByteArray;
-import format.png.Data;
 import haxe.io.Input;
 import haxe.io.Output;
 import haxe.macro.Format;
-import format.png.Reader;
-import format.png.Writer;
 
 // see
 // http://blog.soulwire.co.uk/laboratory/flash/as3-bitmapdata-glitch-generator

@@ -32,24 +32,6 @@ class MashBitmap extends Bitmap {
 	public function new( Width:Int, Height:Int, PixelSize:Int = 1, RedBounds:Array<Int> = null, GreenBounds:Array<Int> = null, BlueBounds:Array<Int> = null ) {
 		_pixelSize = PixelSize;
 		
-		if ( RedBounds != null ) {
-			redBounds = RedBounds;
-		} else {
-			redBounds = [ 0, 255 ];
-		}
-		
-		if ( GreenBounds != null ) {
-			greenBounds = GreenBounds;
-		} else {
-			greenBounds = [ 0, 255 ];
-		}
-		
-		if ( BlueBounds != null ) {
-			blueBounds = BlueBounds;
-		} else {
-			blueBounds = [ 0, 255 ];
-		}
-		
 		super( generate( Width, Height ), PixelSnapping.ALWAYS, false );
 	}
 	

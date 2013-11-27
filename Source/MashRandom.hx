@@ -1,46 +1,13 @@
-/*
- * Copyright (c) 2009 Michael Baczynski, http://www.polygonal.de
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-/**
- * Implementation of the Park Miller (1988) "minimal standard" linear 
- * congruential pseudo-random number generator.
- * 
- * For a full explanation visit: http://www.firstpr.com.au/dsp/rand31/
- * 
- * The generator uses a modulus constant (m) of 2^31 - 1 which is a
- * Mersenne Prime number and a full-period-multiplier of 16807.
- * Output is a 31 bit unsigned integer. The range of values output is
- * 1 to 2,147,483,646 (2^31-1) and the seed must be in this range too.
- * 
- * David G. Carta's optimisation which needs only 32 bit integer math,
- * and no division is actually *slower* in flash (both AS2 & AS3) so
- * it's better to use the double-precision floating point version.
- * 
- * @author Michael Baczynski, www.polygonal.de
- */
-
-/**
- * Ported to Haxe for BITMASH/BITGLITCH by Steve Richey (STVR).
- */
 package;
+
+/**
+ * Created for BitMash. References include:
+	 * http://lab.polygonal.de/?p=162
+	 * http://en.wikipedia.org/wiki/Park%E2%80%93Miller_random_number_generator
+		 * 
+ * 
+ * @author Steve Richey (STVR)
+ */
 
 class MashRandom {
 	/**
@@ -48,43 +15,77 @@ class MashRandom {
 	 */
 	public static var seed:UInt = 1;
 	
-	private static inline var FULL_PERIOD_MULTIPLIER:UInt = 16807;
-	private static inline var MODULUS_CONSTANT:UInt = 2147483647;
-	private static inline var INT_SPACER:Float = 0.4999;
+	/**
+	 * Constants.
+	 */
+	private static inline var MULTIPLIER:UInt = 75;
+	public static inline var MODULUS:UInt = 65537;
+	private static inline var POSSIBLE_CHARACTERS:String = " ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	
+	// These should work, but they keep giving negative numbers. Not sure what's wrong.
+	//private static inline var MULTIPLIER:UInt = 16807;
+	//private static inline var MODULUS:UInt = 2147483647;
 	
 	/**
-	 * Provides the next pseudorandom number as an integer.
+	 * Provides the next pseudorandom number as an integer from 0 to 65535.
 	 */
 	public static inline function int():UInt {
-		return gen();
+		return gen() - 1;
 	}
 	
 	/**
-	 * Provides the next pseudorandom number as a float between nearly 0 and nearly 1.0.
+	 * Provides the next pseudorandom number as a float between 0 and 1.
 	 */
-	public static inline function double():Float {
-		return ( gen() / MODULUS_CONSTANT );
+	public static inline function float():Float {
+		return ( gen() / ( MODULUS - 1 ) );
+	}
+	
+	/**
+	 * Provides the next pseudorandom number as a boolean value with controllable weight.
+	 * 
+	 * @param	Weight	The percentage chance that a true value will be returned.
+	 * @return	A boolean value, either true or false.
+	 */
+	public static inline function bool( Weight:Float = 0.5 ):Bool {
+		return ( int() < Weight * ( MODULUS - 1 ) ) ? true : false;
+	}
+	
+	/**
+	 * Provides the next pseudorandom number as a single-character string.
+	 * 
+	 * @return	A randomly generated character.
+	 */
+	public static inline function char():String {
+		return POSSIBLE_CHARACTERS.charAt( intRanged( 0, POSSIBLE_CHARACTERS.length ) );
+	}
+	
+	public static inline function color():UInt {
+		var r:UInt = intRanged( 0, 255 ) << 16;
+		var g:UInt = intRanged( 0, 255 ) << 8;
+		var b:UInt = intRanged( 0, 255 );
+		
+		return 0xff + r + g + b;
 	}
 	
 	/**
 	 * Provides the next pseudorandom number as an integer betweeen a given range.
 	 */
 	public static inline function intRanged( min:UInt, max:UInt ):UInt {
-		return Math.round( doubleRanged( min - INT_SPACER, max + INT_SPACER ) );
+		return Math.round( floatRanged( min, max ) );
 	}
 	
 	/**
 	 * Provides the next pseudorandom number as a float between a given range.
 	 */
-	public static inline function doubleRanged( min:Float, max:Float ):Float {
-		return min + ( ( max - min ) * double() );
+	public static inline function floatRanged( min:Float, max:Float ):Float {
+		return float() * ( max - min ) + min;
 	}
 	
 	/**
-	 * Internal method for pseudo-random number generation:
-	 * new-value = (old-value * 16807) mod (2^31 - 1)
+	 * The actual pseudorandom number generation code. Based on the Lehmer random number generator.
+	 * Will generate a value from 1 to MODULUS - 1, inclusive.
 	 */
-	private static inline function gen():UInt 	{
-		return seed = ( seed * FULL_PERIOD_MULTIPLIER ) % MODULUS_CONSTANT;
+	private static inline function gen():UInt {
+		return seed = ( seed * MULTIPLIER ) % MODULUS;
 	}
 }
