@@ -24,7 +24,7 @@ class MashBitmapText extends MashBitmap {
 	private static inline var Q_WIDTH:Int = 4;
 	private static inline var W_WIDTH:Int = 5;
 	
-	public function new( text:String, size:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1 ) {
+	public function new( text:String, size:Int = 0, charsPerLine:Int = 0, pixelSize:Int = 1, ?ColBounds:ColorBounds ) {
 		if ( text == "" ) {
 			_text = randomText( 10 );
 		} else {
@@ -52,7 +52,7 @@ class MashBitmapText extends MashBitmap {
 		
 		moves = false;
 		
-		super( _w, _h, _pixelSize );
+		super( _w, _h, _pixelSize, ColBounds );
 	}
 	
 	private inline function predictWidth():Int {
@@ -195,7 +195,7 @@ class MashBitmapText extends MashBitmap {
 		
 		for ( i in arr ) {
 			if ( i == 1 ) {
-				bd.draw( new MashBitmap( _size, _size, _pixelSize ), new Matrix( 1, 0, 0, 1, posX, posY ) );
+				bd.draw( new MashBitmap( _size, _size, _pixelSize, _colBounds ), new Matrix( 1, 0, 0, 1, posX, posY ) );
 			}
 			
 			posX += _size;
@@ -247,17 +247,9 @@ class MashBitmapText extends MashBitmap {
 		var s:String = "";
 		
 		while ( s.length < len ) {
-			s += randomLetter();
+			s += MashRandom.char();
 		}
 		
 		return s;
-	}
-	
-	private inline static function LETTER_ARRAY():Array<String> {
-		return [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " " ];
-	}
-	
-	private inline function randomLetter():String {
-		return LETTER_ARRAY()[ randomInt( 0, LETTER_ARRAY().length ) ];
 	}
 }

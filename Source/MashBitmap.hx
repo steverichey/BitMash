@@ -16,10 +16,8 @@ class MashBitmap extends Bitmap {
 	private var _pixelSize:Int;
 	private var _regenTimer:Timer;
 	private var _rect:MashRect;
+	private var _colBounds:ColorBounds;
 	
-	public var redBounds:Array<Int>;
-	public var greenBounds:Array<Int>;
-	public var blueBounds:Array<Int>;
 	public var moves:Bool;
 	
 	/**
@@ -29,8 +27,14 @@ class MashBitmap extends Bitmap {
 	 * @param	Height
 	 * @param	PixelSize
 	 */
-	public function new( Width:Int, Height:Int, PixelSize:Int = 1, RedBounds:Array<Int> = null, GreenBounds:Array<Int> = null, BlueBounds:Array<Int> = null ) {
+	public function new( Width:Int, Height:Int, PixelSize:Int = 1, ?ColBounds:ColorBounds ) {
 		_pixelSize = PixelSize;
+		
+		if ( ColBounds != null ) {
+			_colBounds = ColBounds;
+		} else {
+			_colBounds = new ColorBounds();
+		}
 		
 		super( generate( Width, Height ), PixelSnapping.ALWAYS, false );
 	}
@@ -149,7 +153,7 @@ class MashBitmap extends Bitmap {
 		
 		for ( X in 0...temp.width ) {
 			for ( Y in 0...temp.height ) {
-				temp.setPixel( X, Y, randomColor() );
+				temp.setPixel( X, Y, MashRandom.color( _colBounds ) );
 			}
 		}
 		
@@ -160,18 +164,5 @@ class MashBitmap extends Bitmap {
 		}
 		
 		return temp;
-	}
-	
-	private inline function randomColor():UInt {
-		//var red:Int = ( Std.int( Math.random() * ( redBounds[1] - redBounds[0] ) + redBounds[0] ) >> 16 ) & 0xFF;
-		//var green:Int = ( Std.int( Math.random() * ( greenBounds[1] - greenBounds[0] ) + greenBounds[0] ) >> 8 ) & 0xFF;
-		//var blue:Int = Std.int( Math.random() * ( blueBounds[1] - blueBounds[0] ) + blueBounds[0] ) & 0xFF;
-		
-		//return red << 16 | green << 8 | blue;
-		return ( Std.int( Math.random() * ( 0xffFFFFFF - 0xff000000 ) ) );
-	}
-	
-	private inline function randomInt( lo:Int, hi:Int, step:Int = 1 ):Int {
-		return step * Std.int( Math.random() * ( ( hi / step ) - ( lo / step ) ) + ( lo / step ) );
 	}
 }

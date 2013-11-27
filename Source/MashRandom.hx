@@ -4,7 +4,8 @@ package;
  * Created for BitMash. References include:
 	 * http://lab.polygonal.de/?p=162
 	 * http://en.wikipedia.org/wiki/Park%E2%80%93Miller_random_number_generator
-		 * 
+	 * http://lab.polygonal.de/?p=162
+	 * http://www.cs.ucr.edu/~ciardo/teaching/CS177/section2.1.pdf
  * 
  * @author Steve Richey (STVR)
  */
@@ -59,12 +60,22 @@ class MashRandom {
 		return POSSIBLE_CHARACTERS.charAt( intRanged( 0, POSSIBLE_CHARACTERS.length ) );
 	}
 	
-	public static inline function color():UInt {
-		var r:UInt = intRanged( 0, 255 ) << 16;
-		var g:UInt = intRanged( 0, 255 ) << 8;
-		var b:UInt = intRanged( 0, 255 );
+	public static inline function color( ?ColBounds:ColorBounds ):UInt {
+		var r:UInt = 0;
+		var g:UInt = 0;
+		var b:UInt = 0;
 		
-		return 0xff + r + g + b;
+		if ( ColBounds != null ) {
+			r = intRanged( ColBounds.redBounds.min, ColBounds.redBounds.max ) << 16;
+			g = intRanged( ColBounds.greenBounds.min, ColBounds.greenBounds.max ) << 8;
+			b = intRanged( ColBounds.blueBounds.min, ColBounds.blueBounds.max );
+		} else {
+			r = intRanged( 0, 255 ) << 16;
+			g = intRanged( 0, 255 ) << 8;
+			b = intRanged( 0, 255 );
+		}
+		
+		return r + g + b;
 	}
 	
 	/**

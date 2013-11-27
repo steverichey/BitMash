@@ -30,38 +30,38 @@ class MashGame extends MashSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		_superBG = new MashBitmap( 400, 200, MOVE_DIST );
-		add( new Bitmap( new BitmapData( 400, 200, false, 0xff000000 ) ) );
+		//_superBG = new MashBitmap( 400, 200, MOVE_DIST );
+		//add( new Bitmap( new BitmapData( 400, 200, false, 0xff000000 ) ) );
 		
-		_text = new MashBitmapText( "bitmash", 8, 2, MOVE_DIST );
+		_text = new MashBitmapText( "bitmash", 8, 2, MOVE_DIST, new ColorBounds( new ColorBound( 128,240 ), new ColorBound( 128,240), new ColorBound( 230,255 ) ) );
 		_text.x = MOVE_DIST;
 		_text.y = MOVE_DIST;
 		_text.setInterval( 500 );
 		add( _text );
 		
-		_bg = new MashBitmap( 200, 200, MOVE_DIST );
+		_bg = new MashBitmap( 200, 200, MOVE_DIST, new ColorBounds( new ColorBound(0,100), new ColorBound(0,100), new ColorBound( 0, 100 ) ) );
 		_bg.x = _text.fx + MOVE_DIST;
 		_bg.setInterval( 250 );
-		//add( _bg );
+		add( _bg );
 		
-		_level = new MashTiles( MashTiles.generateEmptySquare( 12, 12 ), 12, MOVE_DIST, MOVE_DIST );
-		_level.x = _text.fx + MOVE_DIST;
-		_level.y = MOVE_DIST;
+		//_level = new MashTiles( MashTiles.generateEmptySquare( 12, 12 ), 12, MOVE_DIST, MOVE_DIST );
+		//_level.x = _text.fx + MOVE_DIST;
+		//_level.y = MOVE_DIST;
 		//add( _level );
 		
-		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, MOVE_DIST );
+		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, MOVE_DIST, new ColorBounds( new ColorBound(0,1), new ColorBound(0,1) ) );
 		_instructions.x = _bg.fx + MOVE_DIST;
 		_instructions.y = MOVE_DIST;
 		_instructions.setInterval( 1000 );
 		add( _instructions );
 		
-		_goal = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
+		_goal = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST, new ColorBounds( null, new ColorBound( 0, 1 ) ) );
 		_goal.x = randomize( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
 		_goal.y = randomize( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
 		_goal.setInterval( 17 );
 		add( _goal );
 		
-		_player = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST );
+		_player = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST, new ColorBounds( new ColorBound( 0, 1) ) );
 		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
 		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
 		_player.setInterval( 17 );

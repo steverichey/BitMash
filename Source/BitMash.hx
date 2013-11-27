@@ -49,7 +49,7 @@ class BitMash extends MashSprite {
 		_game.destroy();
 		_game = null;
 		
-		MashLevels.level 
+		MashLevels.level ++;
 		
 		createLevel();
 	}
