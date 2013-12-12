@@ -58,19 +58,11 @@ class MashSprite extends Sprite {
 		}
 	}
 	
-	public inline function getWidth():Int {
-		return Std.int( this.width );
-	}
-	
-	public inline function getHeight():Int {
-		return Std.int( this.height );
-	}
-	
 	public inline function getRectangle():Rectangle {
-		return new Rectangle( this.x, this.y, getWidth(), getHeight() );
+		return new Rectangle( this.x, this.y, this.width, this.height );
 	}
 	
-	private function randomize( lo:Int, hi:Int, step:Int = 1 ):Int {
-		return step * Std.int( Math.random() * ( ( hi / step ) - ( lo / step ) ) + ( lo / step ) );
+	private inline function center( obj:DisplayObject ):Void {
+		obj.x = Math.round( ( BitMash.getWidth() - obj.width ) / 2 );
 	}
 }

@@ -60,6 +60,12 @@ class MashRandom {
 		return POSSIBLE_CHARACTERS.charAt( intRanged( 0, POSSIBLE_CHARACTERS.length ) );
 	}
 	
+	/**
+	 * Provides the next pseudorandom number as a color from 0xffFFFFFF to 0xff000000.
+	 * 
+	 * @param	?ColBounds	A ColorBounds object to use to specify the range of colors to choose from.
+	 * @return	A color, as a UInt.
+	 */
 	public static inline function color( ?ColBounds:ColorBounds ):UInt {
 		var r:UInt = 0;
 		var g:UInt = 0;
@@ -79,10 +85,17 @@ class MashRandom {
 	}
 	
 	/**
-	 * Provides the next pseudorandom number as an integer betweeen a given range.
+	 * Provides the next pseudorandom number as an integer between a given range.
 	 */
 	public static inline function intRanged( min:UInt, max:UInt ):UInt {
 		return Math.round( floatRanged( min, max ) );
+	}
+	
+	/**
+	 * Provides the next pseudorandom number as an integer between a given range, but only in increments of step.
+	 */
+	public static inline function intRangedStep( min:UInt, max:UInt, step:UInt ):UInt {
+		return Std.int( intRanged( Std.int( min / step ), Std.int( max / step ) ) * step );
 	}
 	
 	/**

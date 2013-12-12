@@ -56,14 +56,14 @@ class MashGame extends MashSprite {
 		add( _instructions );
 		
 		_goal = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST, new ColorBounds( null, new ColorBound( 0, 1 ) ) );
-		_goal.x = randomize( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
-		_goal.y = randomize( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
+		_goal.x = MashRandom.intRangedStep( _bg.mx, _bg.fx - _goal.gw, MOVE_DIST );
+		_goal.y = MashRandom.intRangedStep( _bg.my, _bg.fy - _goal.gh, MOVE_DIST );
 		_goal.setInterval( 17 );
 		add( _goal );
 		
 		_player = new MashBitmap( MOVE_DIST * SIZE, MOVE_DIST * SIZE, MOVE_DIST, new ColorBounds( new ColorBound( 0, 1) ) );
-		_player.x = randomize( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
-		_player.y = randomize( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
+		_player.x = MashRandom.intRangedStep( _bg.gx, _bg.mx - _player.gw, MOVE_DIST );
+		_player.y = MashRandom.intRangedStep( _bg.gy, _bg.my - _player.gh, MOVE_DIST );
 		_player.setInterval( 17 );
 		_player.moves = true;
 		add( _player );
