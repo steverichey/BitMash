@@ -39,7 +39,7 @@ class MashGame extends MashSprite {
 		_text.setInterval( 500 );
 		add( _text );
 		
-		_bg = new MashBitmap( 200, 200, MOVE_DIST, new ColorBounds( new ColorBound(0,100), new ColorBound(0,100), new ColorBound( 0, 100 ) ) );
+		_bg = new MashBitmap( 200, 200, MOVE_DIST );
 		_bg.x = _text.fx + MOVE_DIST;
 		_bg.setInterval( 250 );
 		add( _bg );
@@ -49,7 +49,7 @@ class MashGame extends MashSprite {
 		//_level.y = MOVE_DIST;
 		//add( _level );
 		
-		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, MOVE_DIST, new ColorBounds( new ColorBound(0,1), new ColorBound(0,1) ) );
+		_instructions = new MashBitmapText( MashLevels.getText(), 4, 6, MOVE_DIST );
 		_instructions.x = _bg.fx + MOVE_DIST;
 		_instructions.y = MOVE_DIST;
 		_instructions.setInterval( 1000 );

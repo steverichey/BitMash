@@ -27,17 +27,20 @@ class BitMash extends MashSprite {
 	override private function init( ?e:Event ):Void {
 		super.init( e );
 		
-		haxe.Log.trace( this.width );
-		
 		gameWidth = Std.int( this.width );
 		gameHeight = Std.int( this.height );
 		
 		MashRandom.seed = 1;
 		_input = new MashInput();
 		
-		_title = new MashTitle();
-		addChild( _title );
-		_title.addEventListener( Event.COMPLETE, onBeginGame, false, 0, true );
+		//_title = new MashTitle();
+		//addChild( _title );
+		
+		createLevel();
+		
+		if ( _title != null ) {
+			_title.addEventListener( Event.COMPLETE, onBeginGame, false, 0, true );
+		}
 	}
 	
 	override public function update( ?e:Event ):Void {
@@ -46,7 +49,6 @@ class BitMash extends MashSprite {
 		if ( _game != null ) {
 			_game.update(e);
 		}
-		haxe.Log.trace( this.width );
 	}
 	
 	private function onBeginGame( ?e:Event ):Void {
@@ -85,7 +87,7 @@ class BitMash extends MashSprite {
 		var w:Int = 0;
 		
 		if ( gameWidth == 0 ) {
-			w = 
+			w = 300;
 		} else {
 			w = gameWidth;
 		}
