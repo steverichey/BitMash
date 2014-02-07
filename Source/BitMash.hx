@@ -38,6 +38,8 @@ class BitMash extends MashSprite {
 		
 		createLevel();
 		
+		flash.media.
+		
 		if ( _title != null ) {
 			_title.addEventListener( Event.COMPLETE, onBeginGame, false, 0, true );
 		}
